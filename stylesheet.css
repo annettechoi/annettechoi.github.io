@@ -1,0 +1,114 @@
+    html,body{
+      overflow-x:hidden;
+    }
+
+     body{
+      background: white;
+      padding-bottom: 20px;
+    }
+
+      .header{
+        color: #545454;
+        font-family: "Helvetica", Helvetica, sans-serif;
+        font-size: 60px;
+        width: 1248px;
+        float:left;
+     }
+
+      .column{
+        float: left;
+        width: 18%;
+        line-height: 11px;
+      }
+
+       .column_1{
+        float: left;
+        width: 15%;
+        line-height: 11px;
+      }
+
+/*      .row:after{
+        content:"";
+        clear:both;
+        display:table;
+      }*/
+ 
+      .head{
+        color:#bbd532;
+        font-family: "Helvetica", Helvetica, sans-serif;
+        font-size: 60px;
+    
+      }
+
+      .nav{
+        font-family: "Helvetica", Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: underline;
+      }
+
+      .subhead{
+        font-size:20px;
+        margin-bottom:0px;
+      }
+      .images{
+        width:180px;
+        height:180px;
+        box-shadow:5px 5px 5px #999;
+        margin-top: 10px
+      }
+
+      .images_1{
+        width:160px;
+        height:130px;
+        box-shadow:5px 5px 5px #999;
+        margin-top: 10px
+      }
+
+      .link{
+        color: #bbd342;
+        text-decoration: underline;
+      }
+
+      .arrow{
+        margin-left:300px;
+      }
+      a, u {
+        text-decoration: none;
+        color:inherit;
+      }
+      .pages{
+        color: #bbd342;
+        font-size: 20px;
+        text-decoration: underline;
+        line-height: 150%;
+        margin-top: 100px;
+
+      }
+
+
+     p{
+        font-size: 20px;
+        margin-left:0px;
+        margin-bottom:5px;
+        margin-top:50px;
+      }
+
+      p1{
+        font-style: italic;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      p3{
+        color: #999;
+        font-size: 16px;
+        text-decoration: underline;
+        line-height: 150%;
+      }     
+
+      p4{
+        font-size: 16px;
+
+      }
+      }
