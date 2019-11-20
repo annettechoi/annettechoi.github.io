@@ -27,6 +27,7 @@
         line-height: 11px;
       }
 
+
 /*      .row:after{
         content:"";
         clear:both;
@@ -36,7 +37,7 @@
       .head{
         color:#bbd532;
         font-family: "Helvetica", Helvetica, sans-serif;
-        font-size: 60px;
+        font-size: 45px;
     
       }
 
@@ -48,7 +49,7 @@
       }
 
       .subhead{
-        font-size:20px;
+        font-size:16px;
         margin-bottom:0px;
       }
       .images{
@@ -88,7 +89,7 @@
 
 
      p{
-        font-size: 20px;
+        font-size: 15px;
         margin-left:0px;
         margin-bottom:5px;
         margin-top:50px;
@@ -96,7 +97,7 @@
 
       p1{
         font-style: italic;
-        font-size: 14px;
+        font-size: 12px;
         margin-bottom: 10px;
       }
 

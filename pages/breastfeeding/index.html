@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>U.S. Breastfeeding Rates</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+    /* custom css styles will go here */
+		h2{
+			text-align: center;
+			font-family: 'Krub', sans-serif;
+		}
+		svg{
+		max-width; 500px;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+
+		}
+		p{
+			max-width: 700px;
+			margin-left: auto;
+			margin-right: auto;
+			font-family: 'Krub', sans-serif;
+		}
+		
+		p1{
+			max-width: 700px;
+			margin-left: 500;
+			margin-right: 500;
+			font-family: 'Krub', sans-serif;
+			font-size: 12px;
+			
+			
+		}
+
+		#data-source{
+			margin-right: auto;
+			margin-left: 0;
+			font-size: 10px;
+			margin-top: 3px;
+			margin-bottom: 10px;
+			font-family: 'Krub', sans-serif;
+		}
+	
+		
+    </style>
+
+	
+</head>
+	
+	
+	
+<body>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script>
+      var margin = {top:60, right:10, bottom:20, left:100},
+          width  = 500 - margin.left - margin.right,
+          height = 600 - margin.top - margin.bottom;
+
+      var svg = d3.select("body")
+          .append("svg")
+          .attr("width", "100%")
+          .attr("height", "100%")
+          .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom));
+
+      var chart = svg.append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      
+      var xScale = d3.scaleLinear()
+          .range([0, width]);
+
+      var yScale = d3.scaleBand()
+          .range([0, height])
+          .padding(0.1);
+
+//	  Promise.all([
+//		  , 
+//		  d3.csv("breastfeeding2.csv") 
+//	  ])
+  	  d3.csv("breastfeeding.csv")
+	  .then(function(data){
+       
+        data = data.map(function(d){ 
+            d["Breastfeeding at 6 months (2008)"] = +d["Breastfeeding at 6 months (2008)"];
+			d["Breastfeeding at 6 months (2018)"] = +d["Breastfeeding at 6 months (2018)"]; 
+			d["People who dont breastfeed"] = +d["People who dont breastfeed"]; 
+			d["Percent Increase"] = +d["Percent Increase"]; 
+			d["Percent Change"] = +d["Percent Change"]; 
+            return d;
+        });
+		
+
+		  
+		
+
+        xScale.domain([0, 100]);
+        yScale.domain(data.map(function(d){ return d["State"]; }))
+		 
+        chart.selectAll(".bar3")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("class", "bar3")
+            .attr("x", function(d){ return xScale(d["Breastfeeding at 6 months (2018)"])})/*function(d){ return xScale(d["Breastfeeding at 6 months (2008)"]); })*/
+            .attr("y", function(d){ return yScale(d["State"]); })
+            .attr("height", function(d){ return yScale.bandwidth(); })
+            .attr("width", function(d){ return xScale(d["People who dont breastfeed"]); })
+		    .attr("opacity","0.1")
+            .attr("fill", "black"); 		  
+		  
+        chart.selectAll(".bar2")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("class", "bar2")
+            .attr("x", 0)/*function(d){ return xScale(d["Breastfeeding at 6 months (2008)"]); })*/
+            .attr("y", function(d){ return yScale(d["State"]); })
+            .attr("height", function(d){ return yScale.bandwidth(); })
+            .attr("width", function(d){ return xScale(d["Breastfeeding at 6 months (2018)"]); })
+		    .attr("opacity","0.6")
+            .attr("fill", "steelblue"); 
+		  
+		  
+        chart.selectAll(".bar1")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("class", "bar1")
+            .attr("x", 0)/*function(d){ return xScale(d["Breastfeeding at 6 months (2008)"]); })*/
+            .attr("y", function(d){ return yScale(d["State"]); })
+            .attr("height", function(d){ return yScale.bandwidth(); })
+            .attr("width", function(d){ return xScale(d["Breastfeeding at 6 months (2008)"]); })
+            .attr("fill", "steelblue");
+		  
+		  
+
+        
+        svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .selectAll(".textlabel-1")
+            .data(data)
+            .enter()
+            .append("text")
+            .attr("class", "textlabel-1")
+            .attr("x", function(d){ return xScale(d["Percent Change"]) +16;})
+            .attr("y", function(d){ return yScale(d["State"]) + 2; })
+		  	.attr("alignment-baseline", "hanging")
+            .attr("text-anchor", "end")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "7px")
+		  	.attr("fill", "black")
+		  //this makes the text of the label
+            .text(function(d){ return d3.format(",")(d["Percent Increase"]); })
+		  
+        //adding y axis to the left of the chart
+        svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .call(d3.axisLeft(yScale));
+
+        //adding x axis to the bottom of chart
+        svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + (height + margin.top) + ")")
+            .call(d3.axisBottom(xScale));
+        
+        svg.append("g")
+            .attr("transform", "translate(" + (width/1.8) + ", 15)")
+            .append("text")
+            .text("How Paid Leave Policies Affect Breastfeeding")
+            .style("text-anchor", "middle")
+            .style("font-family", "Arial")
+            .style("font-weight", "500");
+		  
+        svg.append("g")
+            .attr("transform", "translate(" + (width/1.8) + ", 35)")
+            .append("text")
+            .text("This chart shows the percent increase in breastfeeding rates at an infant's six months of life in the United States.")
+            .style("text-anchor", "middle")
+            .style("font-family", "Arial")
+            .style("font-weight", "100")
+		  	.style("font-size","8");
+		  	
+		  
+		  
+		  
+		 svg.append("g")
+            .attr("transform", "translate(" + (width/1.8) + ", 45)")
+            .append("text")
+            .text(" The dark blue represents data from 2008, the light blue represents data from 2018.")
+            .style("text-anchor", "middle")
+            .style("font-family", "Arial")
+            .style("font-weight", "100")
+		  	.style("font-size","8");
+		  
+		  
+		 
+      });
+		
+		
+//	     //legend
+//     var legend = svg.selectAll(".legend")
+//         .data()
+//         .enter();
+//     
+//     
+//     legend.append("rect")
+//         .attr("x", margin.left + width + boxGap )
+//         .attr("y", function(d,i){ return (i * boxSize) + margin.top; })
+//         .attr("width", boxSize - 3)
+//         .attr("height", boxSize - 3)
+//         .attr("fill", function(d){ return categoryScale(d); })
+//     
+//     legend.append("text")
+//         .attr("x", margin.left + width + boxSize + (boxGap*2))
+//         .attr("y", function(d,i){ return (i * boxSize) + margin.top; })
+//         .append("tspan")
+//         .attr("dx", 0)
+//         .attr("dy", boxSize/2)
+//         .style("alignment-baseline", "middle")
+//         .style("font-size", 10)
+//         .style("font-family", "Helvetica, Arial, sans-serif")
+////         .text(function(d){ return d;})
+// });
+		
+		
+		
+		
+    </script>
+
+<p1>The number of mothers breastfeeding through the first six months of an infant’s life have gone up across the United States in the last decade—ranging from an increase of just over half a percent in Rhode Island to over 100 percent in the case of Kentucky. The American Academy of Pediatrics recommends that mothers breastfeed their infants exclusively for the first six months of age.</p1>
+	
+
+	
+	
+<p>When physician Rita Hamad became pregnant with her daughter a couple of years ago, her employer, Stanford University, gave her three months of fully paid maternity leave. When she returned to work, she noticed something about the medical assistants she worked alongside daily.</p>
+
+<p>“They would take maternity leave, but then I’d see them back at work two weeks later,” said Hamad, now an assistant professor of Family Community Medicine at the University of California, San Francisco.</p>
+
+<p>The discrepancy made her wonder what effects paid leave policies might have on new mothers’ parenting choices. So, she and her colleagues decided to look into it, starting with the choice to breastfeed — and for how long.</p>
+
+<p>The World Health Organization recommends that infants be breastfed exclusively for six months. The American Academy of Pediatricians also backs this recommendation.</p>
+
+<p>But Hamad and colleagues hypothesized that low-income women who could not afford to take time off might be less likely to breastfeed, or to breastfeed for as long.</p>
+
+<p>They were right. The United States is the only developed country that does not offer federally mandated paid leave to new parents, said Maya Rossin-Slater, Assistant Professor of the Department of Health and Research policy at Stanford University. However, in 2004 California enforced a policy that mandated employers pay up to 55 percent of a new parent’s salary for six weeks. New Jersey did the same in 2009, covering up to 67 percent. Policies like these help increase breastfeeding rates, but largely for a select group.</p>
+
+<p>The group analyzed the breastfeeding practices of mothers in the two states, both pre- and post-policy changes. They found that older, white, and affluent mothers were most likely to breastfeed exclusively for six months. And younger, low-income mothers were less likely to see those improvements.</p>
+
+<p>The group’s findings, recently published in the American Journal of Public Health, are the first to show that the partially paid leave policies mandated in California and New Jersey boosted breastfeeding rates starting right when the policies were put into place.</p>
+
+<p>They also show that partially paid leave policies increase breastfeeding rates — but primarily for higher-income women who can afford to take time off. Not so much for the poor, who may need the protective benefits of breastfeeding most.“People are responding differently to these policies,” said Hamad. “Certain populations are getting left behind.”</p>
+
+<p>The study builds on findings presented at the Pediatric Academic Societies meeting earlier this year by two scientists from the University of Washington. It revealed that extending maternity leave to 12 weeks resulted in a significant increase in breastfeeding duration and exclusivity.</p>
+
+<p>Those findings did not take socioeconomic status into account, but Hamad says it’s critical that policy makers are made aware of it.</p>
+
+<p>Gina Byun, a senior administrative analyst at California State University, Fullerton, experienced this firsthand. After six weeks of fully paid maternity leave, she was back at work part time, balancing her job, nanny bills, and a newborn. Her coworkers were supportive and the school accommodating, she said, but it wasn’t long until she came face-to-face with a dilemma.</p>
+
+<p>“I had meetings all day,” she said. “I didn’t have time to pump every three hours.” Eventually, her milk supply decreased. “I actually stopped breastfeeding last week,” said Byun, whose daughter was born in August.</p>
+
+<p>Breastfeeding not only provides critical bonding time for new parents and their babies, it comes with benefits formula simply can’t match. Studies have found that breast milk can reduce obesity rates in children later in life and that, by providing immune support, it correlates with infants’ reduced risk of certain kinds of infection.
+
+<p>“It’s a critical time for bonding with parents,” said Hamad. “Breast milk is the best source of nutrition, and not being able to give that to your baby is doing it a disservice.”</p>
+
+<p>Washington D.C., New York, and three other states have followed in California and New Jersey’s footsteps, also passing partially paid leave policies. In the last few years, the city of San Francisco and major tech companies, such as Microsoft have taken it a step further, mandating fully paid six week leave policies for parents of all genders.</p>
+
+<p>Though state policies offer varying types of job protection and paid time off for parents, they do tend to have much in common. Most offer six to twelve weeks of paid leave and few limitations — for instance, there is no minimum number of employees a company must employ for the policies to apply.</p>
+
+<p>“They’re meant to be universal,” said Rossin-Slater. “That’s the great thing about these policies.”</p>
+	
+	<p id="data-source">Data source: Center for Disease Control and Prevention</p>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Berkeley PD Arrests</title>
+	
+	    <style>
+		h2{
+			text-align: center;
+			font-family: 'Krub', sans-serif;
+		}
+		svg{
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+
+		}
+		p{
+			max-width: 500px;
+			margin-left: auto;
+			margin-right: auto;
+			font-family: 'Krub', sans-serif;
+		}
+
+		#data-source{
+			margin-right: auto;
+			margin-left: 0;
+			font-size: 10px;
+			margin-top: 3px;
+			margin-bottom: 10px;
+			font-family: 'Krub', sans-serif;
+		}
+		
+			.dot {
+				opacity: 0.5;
+				fill: grey;
+    }
+    
+			line {
+				fill: none;
+				stroke: grey;
+				stroke-width: 1;
+				shape-rendering: crispEdges;
+			}
+			
+			.tooltip{
+				position: absolute;
+				border-radius: 2;
+				background-color: #F6F4F1;
+				border: 1px solid black;
+				opacity: 0;
+				padding:0px 10px;
+				font-size: 10px;
+				transform: translate(-70%, -100%);
+			
+		}
+			
+    </style>
+	
+</head>
+<body>
+	<h2>Berkeley PD Arrests</h2>
+	<div id="chart"></div>
+	<p>Reasons for Berkeley PD arrests that occured between September 28th and October 28th.</p>
+
+	
+<script src="https://d3js.org/d3.v5.min.js"></script>
+	
+<script type="text/javascript">
+	
+
+var margin = {top:10,right:150,bottom:30,left:0},
+    width  = 600 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom,
+    boxSize = 30, //size of each box
+    boxGap = 3, //space between each box
+    howManyAcross = Math.floor(width / boxSize);
+  
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom));
+	
+var div = d3.select("body")
+	.append("div")
+	.attr("class", "tooltip");
+	
+var categoryHeading = "Arrest"
+
+var g = svg.append("g")
+    .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+	
+
+var colors = d3.scaleOrdinal().range(["#E4B6B6", "#E5CC78", "#8EBD82", "#A4CD67", "#A8DAD1", "#A8C2DA", "#A8A9DA", "#D0A8DA","#DAA8BF", "#CF7878", "#CF7878", "#758AA8"])
+	
+//alternatively:
+// var colors = d3.scaleLinear().range(["color1", "color2"])
+
+	
+d3.csv('Bekerley_PD_Arrests-csv.csv').then(function(data, i){
+    	
+     //sort data alphabetically
+     data.sort(function(a,b){ return d3.ascending(a[categoryHeading], b[categoryHeading])});
+     
+     //get all of the unique values in the column for the scale
+     var keys = d3.map(data, function(d){ return d[categoryHeading];}).keys();
+	
+     
+     //set domain on category
+     //colors.domain(keys);
+
+     //convert to a categorical scale
+     var categoryScale = d3.scaleOrdinal(keys.map(function(d, i){ return colors(i/keys.length);}));
+	
+     categoryScale.domain(keys);//set the scale domain
+     
+    
+     //make the main chart
+     g.selectAll(".square")
+         .data(data)
+         .enter()
+         .append("rect")
+         .attr("class", "square")
+         .attr("x", function(d,i){ return boxSize * (i % howManyAcross); })
+         .attr("y", function(d,i){ return Math.floor(i/howManyAcross) * boxSize; })
+         .attr("width", boxSize - 3)
+         .attr("height", boxSize - 3)
+         .attr("fill", function(d){ return categoryScale(d[categoryHeading]);})
+		 .on("mouseover", function(d){
+		 
+		 
+		 	div.style("opacity", 1)
+		 	  .html("<p><strong>Reason:</strong> " + d.Arrest + "</p>")
+		 	  .style("top", (event.pageY-10) + "px")
+		      .style("left", (event.pageX+10) + "px");
+		 
+	     })
+		 .on("mouseout", function(){
+		 
+	 	 })
+         .exit();
+     
+     //legend
+     var legend = svg.selectAll(".legend")
+         .data(keys)
+         .enter();
+     
+     
+     legend.append("rect")
+         .attr("x", margin.left + width + boxGap )
+         .attr("y", function(d,i){ return (i * boxSize) + margin.top; })
+         .attr("width", boxSize - 3)
+         .attr("height", boxSize - 3)
+         .attr("fill", function(d){ return categoryScale(d); })
+     
+     legend.append("text")
+         .attr("x", margin.left + width + boxSize + (boxGap*2))
+         .attr("y", function(d,i){ return (i * boxSize) + margin.top; })
+         .append("tspan")
+         .attr("dx", 0)
+         .attr("dy", boxSize/2)
+         .style("alignment-baseline", "middle")
+         .style("font-size", 10)
+         .style("font-family", "Helvetica, Arial, sans-serif")
+         .text(function(d){ return d;})
+ });
+</script>	
+		<p id="data-source">Data source: City of Berkeley Police Department</p>
+</body>
