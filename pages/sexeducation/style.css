@@ -1,0 +1,121 @@
+
+      #gif{
+        width: 70%;
+        text-align: center;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+
+      }
+
+      #intro{
+        margin-bottom: 0px;
+        max-width: 40rem;
+        text-align: center;
+        margin: 1rem auto;
+      }
+
+      .intro_hed{
+        margin-top: 50px;
+        font-weight: bold;
+        font-size: 50px;
+        color: tomato;
+        font-family: pt serif;
+      }
+
+      .intro_dek{
+        font-size: 18px;
+        font-family: pt serif;
+        color: #a9c774;
+      }
+
+      .byline{
+        font-size: 18px;
+        font-family: pt serif;
+        color: #a9c774;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .text{
+        font-size: 18px;
+        font-family: pt serif;
+        color: #a9c774;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 50px;
+        margin-top: 50px;
+      }
+
+      body{
+        background-color: #fff2ccff;
+      }
+      #scrolly{
+        position: relative;
+        display: flex;
+      }
+
+      .step{
+        margin: 100vh 0;
+        margin-left: 30px;
+        margin-right: 550px;
+        margin-top: 400px;
+        font-family: pt serif;
+     }
+
+      #map{
+        margin-top: 80px;
+        width: 500px;
+        height: 500px;
+        position: fixed;
+        top: 20px;
+        right: 10px;
+      }
+
+      #text{
+        text-align: center;
+      }
+
+      #text{
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+        width: 700px;
+      }
+
+
+/* SCROLLAMA CSS */
+#scroll {
+	position: relative;
+}
+
+.scroll__graphic {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: auto;
+	width: 100%;
+	-webkit-transform: translateed(0,0,0);
+	-moz-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+}
+
+.scroll__graphic.is-fixed {
+	position: fixed;
+}
+
+.scroll__graphic.is-bottom {
+	bottom: 0;
+	top: auto;
+}
+
+.scroll__graphic.chart {
+	position: absolute;
+	right: 1rem;
+	top: 50%;
+	-moz-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
